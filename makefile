@@ -1,6 +1,6 @@
 CC      = g++
 LD 	= g++
-CFLAGS  = -Wall -g
+CFLAGS  = -Wall -g -std=c++20
 LDFLAGS = 
 
 IDIR = inc
@@ -21,7 +21,7 @@ main: $(OBJ_PATH) $(INC_PATH)
 	$(LD) $(LDFLAGS) -o bin/main.exe $(OBJ_PATH) 
 
 $(ODIR)/%.o: $(SDIR)/%.cpp
-	$(CC) $(LDFLAGS) -c -o $@ $<
+	$(CC) $(CFLAGS) -c -o $@ $<
 
 .PHONY: clean
 clean:
