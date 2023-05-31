@@ -68,65 +68,90 @@ struct Vector2
     {
         angle(angle() + rad);
     }
+
+    /// @brief Returns the unit vector (Vector with length 1)
+    inline Vector2<T> unit() const
+    {
+        Vector2<T> ret;
+        ret.length(1.f);
+        return ret;
+    }
+
+    operator std::pair<T, T>()
+    {
+        return std::pair<T, T>(x, y);
+    }
 };
 
 template <typename Ta, typename Tb>
-[[nodiscard]] constexpr Vector2<Ta> operator+(const Vector2<Ta> &a, const Vector2<Tb> &b)
+[[nodiscard]] inline Vector2<Ta> operator+(const Vector2<Ta> &a, const Vector2<Tb> &b)
 {
     return Vector2(a.x + b.x, a.y + b.y);
 }
 
 template <typename Ta, typename T>
-[[nodiscard]] constexpr Vector2<Ta> operator+(const Vector2<Ta> &a, const T &t)
+[[nodiscard]] inline Vector2<Ta> operator+(const Vector2<Ta> &a, const T &t)
 {
     return Vector2(a.x + t, a.y + t);
 }
 
 template <typename Ta, typename Tb>
-[[nodiscard]] constexpr Vector2<Ta> operator-(const Vector2<Ta> &a, const Vector2<Tb> &b)
+[[nodiscard]] inline Vector2<Ta> operator-(const Vector2<Ta> &a, const Vector2<Tb> &b)
 {
     return Vector2(a.x - b.x, a.y - b.y);
 }
 
 template <typename Ta, typename T>
-[[nodiscard]] constexpr Vector2<Ta> operator-(const Vector2<Ta> &a, const T &t)
+[[nodiscard]] inline Vector2<Ta> operator-(const Vector2<Ta> &a, const T &t)
 {
     return Vector2(a.x - t, a.y - t);
 }
 
 template <typename Ta>
-[[nodiscard]] constexpr Vector2<Ta> operator-(const Vector2<Ta> &a)
+[[nodiscard]] inline Vector2<Ta> operator-(const Vector2<Ta> &a)
 {
     return Vector2(-a.x, -a.y);
 }
 
 template <typename Ta, typename Tb>
-[[nodiscard]] constexpr Vector2<Ta> operator*(const Vector2<Ta> &a, const Vector2<Tb> &b)
+[[nodiscard]] inline Vector2<Ta> operator*(const Vector2<Ta> &a, const Vector2<Tb> &b)
 {
     return Vector2(a.x * b.x, a.y * b.y);
 }
 
 template <typename Ta, typename T>
-[[nodiscard]] constexpr Vector2<Ta> operator*(const Vector2<Ta> &a, const T &t)
+[[nodiscard]] inline Vector2<Ta> operator*(const Vector2<Ta> &a, const T &t)
 {
     return Vector2(a.x * t, a.y * t);
 }
 
 template <typename Ta, typename Tb>
-[[nodiscard]] constexpr Vector2<Ta> operator/(const Vector2<Ta> &a, const Vector2<Tb> &b)
+[[nodiscard]] inline Vector2<Ta> operator/(const Vector2<Ta> &a, const Vector2<Tb> &b)
 {
     return Vector2(a.x / b.x, a.y / b.y);
 }
 
 template <typename Ta, typename T>
-[[nodiscard]] constexpr Vector2<Ta> operator/(const Vector2<Ta> &a, const T &t)
+[[nodiscard]] inline Vector2<Ta> operator/(const Vector2<Ta> &a, const T &t)
 {
     return Vector2(a.x / t, a.y / t);
 }
 
 template <typename T>
-std::ostream &operator<<(std::ostream &os, const Vector2<T> &v)
+inline std::ostream &operator<<(std::ostream &os, const Vector2<T> &v)
 {
     os << v.x << ',' << v.y;
     return os;
+}
+
+template <typename Ta, typename Tb>
+[[nodiscard]] inline double dotProduct(const Vector2<Ta> &a, const Vector2<Tb> &b)
+{
+    return a.x * b.x + a.y * b.y;
+}
+
+template <typename Ta, typename Tb>
+[[nodiscard]] inline double crossProduct(const Vector2<Ta> &a, const Vector2<Tb> &b)
+{
+    return a.x * b.y - a.y * b.x;
 }
