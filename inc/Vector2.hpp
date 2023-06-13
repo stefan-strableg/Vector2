@@ -149,7 +149,7 @@ template <typename Ta, typename Tb>
 
 /// @brief Division operator
 template <typename Ta, typename Tb>
-[[nodiscard]] inline Vector2<Ta> operator/(const Vector2<Ta> &a, const Vector2<Tb> &b)
+[[nodiscard]] inline Vector2<typename std::common_type<Ta, Tb>::type> operator/(const Vector2<Ta> &a, const Vector2<Tb> &b)
 {
     return Vector2(a.x / b.x, a.y / b.y);
 }
