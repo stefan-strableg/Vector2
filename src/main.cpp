@@ -3,11 +3,14 @@
 
 int main(void)
 {
-    Vector2<float> v1(3.f, 4.f);
-    Vector2<float> v2(4.f, 3.f);
+    Vector2i v1(3, 4);
 
-    std::cout << v1.getLength() << "\n";
-    std::cout << v1.getAngle() << "(" << DEG(v1.getAngle()) << ")\n";
+    Vector2f v2 = v1 * Vector2(1.1f);
+
+    std::cout << v2.getLength() << "\n";
+
+    std::cout << v2 - v1 << "\n";
+    std::cout << (v2 - v1).yx() << "\n";
 
     return EXIT_SUCCESS;
 }

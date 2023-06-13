@@ -3,6 +3,7 @@
 #include <ios>
 #include <cmath>
 #include <numbers>
+#include <type_traits>
 
 #define DEG(rad) (rad * 180.f / std::numbers::pi)
 #define RAD(deg) (deg / 180.f * std::numbers::pi)
@@ -85,6 +86,12 @@ struct Vector2
         std::swap(x, y);
     }
 
+    /// @brief Returns a copy of the vector with x and y value swapped
+    [[nodiscard]] inline Vector2<T> yx() const
+    {
+        return Vector2<T>(y, x);
+    }
+
     /// @brief Rotates the vector by a specific
     inline void rotate(double rad)
     {
@@ -99,42 +106,55 @@ struct Vector2
         return ret;
     }
 
+    /// @brief Conversion between differend Vector2 types
+    template <typename To>
+    operator Vector2<To>() const
+    {
+        return Vector2<To>(static_cast<To>(x), static_cast<To>(y));
+    }
+
     operator std::pair<T, T>()
     {
         return std::pair<T, T>(x, y);
     }
 };
 
+/// @brief Addition operator
 template <typename Ta, typename Tb>
-[[nodiscard]] inline Vector2<Ta> operator+(const Vector2<Ta> &a, const Vector2<Tb> &b)
+[[nodiscard]] inline Vector2<typename std::common_type<Ta, Tb>::type> operator+(const Vector2<Ta> &a, const Vector2<Tb> &b)
 {
     return Vector2(a.x + b.x, a.y + b.y);
 }
 
+/// @brief Subtraction operator
 template <typename Ta, typename Tb>
-[[nodiscard]] inline Vector2<Ta> operator-(const Vector2<Ta> &a, const Vector2<Tb> &b)
+[[nodiscard]] inline Vector2<typename std::common_type<Ta, Tb>::type> operator-(const Vector2<Ta> &a, const Vector2<Tb> &b)
 {
     return Vector2(a.x - b.x, a.y - b.y);
 }
 
+/// @brief Negation operator
 template <typename Ta>
 [[nodiscard]] inline Vector2<Ta> operator-(const Vector2<Ta> &a)
 {
     return Vector2(-a.x, -a.y);
 }
 
+/// @brief Multiplication operator
 template <typename Ta, typename Tb>
-[[nodiscard]] inline Vector2<Ta> operator*(const Vector2<Ta> &a, const Vector2<Tb> &b)
+[[nodiscard]] inline Vector2<typename std::common_type<Ta, Tb>::type> operator*(const Vector2<Ta> &a, const Vector2<Tb> &b)
 {
     return Vector2(a.x * b.x, a.y * b.y);
 }
 
+/// @brief Division operator
 template <typename Ta, typename Tb>
 [[nodiscard]] inline Vector2<Ta> operator/(const Vector2<Ta> &a, const Vector2<Tb> &b)
 {
     return Vector2(a.x / b.x, a.y / b.y);
 }
 
+/// @brief Stream operator
 template <typename T>
 inline std::ostream &operator<<(std::ostream &os, const Vector2<T> &v)
 {
@@ -142,23 +162,26 @@ inline std::ostream &operator<<(std::ostream &os, const Vector2<T> &v)
     return os;
 }
 
+/// @brief Dot product of two vectors
 template <typename Ta, typename Tb>
 [[nodiscard]] inline double dotProduct(const Vector2<Ta> &a, const Vector2<Tb> &b)
 {
     return a.x * b.x + a.y * b.y;
 }
 
+/// @brief Cross Product of two vectors
 template <typename Ta, typename Tb>
 [[nodiscard]] inline double crossProduct(const Vector2<Ta> &a, const Vector2<Tb> &b)
 {
     return a.x * b.y - a.y * b.x;
 }
 
+// Common Typedefs
 typedef Vector2<float> Vector2f;
 typedef Vector2<double> Vector2d;
 typedef Vector2<int> Vector2i;
 typedef Vector2<long> Vector2l;
-typedef Vector2<long long> Vector2ull;
+typedef Vector2<long long> Vector2ll;
 typedef Vector2<unsigned int> Vector2ui;
 typedef Vector2<unsigned long> Vector2ul;
 typedef Vector2<unsigned long long> Vector2ull;
