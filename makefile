@@ -18,7 +18,7 @@ BIN_PATH = $(addprefix $(BDIR)/, $(BIN))
 SDIR = src
 
 main: $(OBJ_PATH) $(INC_PATH)
-	$(LD) $(LDFLAGS) -o bin/main.exe $(OBJ_PATH) 
+	$(LD) $(LDFLAGS) -o bin/main.exe $(OBJ_PATH)
 
 $(ODIR)/%.o: $(SDIR)/%.cpp
 	$(CC) $(CFLAGS) -c -o $@ $<

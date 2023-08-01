@@ -1,16 +1,18 @@
 #include "..\inc\Vector2.hpp"
 #include <iostream>
+#include <chrono>
+#include <thread>
 
 int main(void)
 {
-    Vector2i v1(3, 4);
+    Vector2f v1(2, 4);
+    Vector2f v2(10, 10);
 
-    Vector2f v2 = v1 * Vector2(1.1f);
-
-    std::cout << v2.getLength() << "\n";
-
-    std::cout << v2 - v1 << "\n";
-    std::cout << (v2 - v1).yx() << "\n";
+    std::cout << v1 << "\n";
+    std::cout << v1.swap() << "\n";
+    std::cout << v1.swap().scale(2) << "\n";
+    std::cout << v1.swap().scale(2).rotate(RAD(90)) << "\n";
+    std::cout << v1.swap().scale(2).rotate(RAD(90)).setAngle(0) << "\n";
 
     return EXIT_SUCCESS;
 }
