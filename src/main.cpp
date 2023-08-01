@@ -5,14 +5,15 @@
 
 int main(void)
 {
-    Vector2f v1(2, 4);
-    Vector2f v2(10, 10);
+    Angle a(360);
+    Angle b(0);
+    Angle c(180);
+    Angle d(-180);
 
-    std::cout << v1 << "\n";
-    std::cout << v1.swap() << "\n";
-    std::cout << v1.swap().scale(2) << "\n";
-    std::cout << v1.swap().scale(2).rotate(90) << "\n";
-    std::cout << v1.swap().scale(2).rotate(90).setAngle(0) << "\n";
+    std::cout << a.wrapUnsigned().getDegrees() << "\n";
+    std::cout << b.wrapUnsigned().getDegrees() << "\n";
+    std::cout << c.wrapSigned().getDegrees() << "\n";
+    std::cout << d.wrapSigned().getDegrees() << "\n";
 
     return EXIT_SUCCESS;
 }

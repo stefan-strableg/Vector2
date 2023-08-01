@@ -56,7 +56,7 @@ struct Vector2
     /// @brief Returns the angle of the Vector2
     [[nodiscard]] inline Angle getAngle() const
     {
-        return std::atan2(y, x);
+        return radians(std::atan2(y, x));
     }
 
     /// @brief Returns the length of the Vector2
@@ -87,10 +87,11 @@ struct Vector2
         return *this;
     }
 
-    /// @brief Returns a copy of the vector with x and y value swapped
+    /// @brief Chainable. Swaps the x and y components of the vector
     [[nodiscard]] inline Vector2<T> swap() const
     {
-        return Vector2<T>(y, x);
+        std::swap(x, y);
+        return *this;
     }
 
     /// @brief Chainable. Returns the unit vector (Vector with length 1)
@@ -101,7 +102,7 @@ struct Vector2
         return ret;
     }
 
-    /// @brief Chainable. Returns a by rad radiants rotated copy of the vector
+    /// @brief Chainable. Returns a by ang rotated copy of the vector
     inline Vector2<T> rotate(Angle ang) const
     {
         Vector2<T> ret(*this);
