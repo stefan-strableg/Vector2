@@ -4,6 +4,7 @@
 #include <cmath>
 #include <numbers>
 #include <type_traits>
+#include <algorithm>
 
 #define DEG(rad) (rad * 180.f / std::numbers::pi)
 #define RAD(deg) (deg / 180.f * std::numbers::pi)
@@ -47,7 +48,10 @@ struct Vector2
     {
     }
 
-    /// @brief Default move constructor
+    /// @brief Copy constructor
+    inline Vector2(const Vector2 &v) = default;
+
+    /// @brief Move constructor
     inline Vector2(Vector2 &&v) = default;
 
     /// @brief Returns the angle of the Vector2
@@ -62,60 +66,101 @@ struct Vector2
         return std::sqrt(x * x + y * y);
     }
 
-    /// @brief Sets the angle of the Vector2 while leaving the length unchanged
-    inline void setAngle(double ang)
+    /// @brief Chainable. Sets the angle of the Vector2 while leaving the length unchanged
+    inline Vector2<T> setAngle(double ang)
     {
         double len = getLength();
 
         x = len * cos(ang);
         y = len * sin(ang);
+
+        return *this;
     }
 
-    /// @brief Sets the length of the Vector2 while leaving the angle unchanged
-    inline void setLength(double len)
+    /// @brief Chainable. Sets the length of the Vector2 while leaving the angle unchanged
+    inline Vector2<T> setLength(double len)
     {
         double ang = getAngle();
 
         x = len * cos(ang);
         y = len * sin(ang);
-    }
 
-    /// @brief Swaps x and y values
-    inline void swap()
-    {
-        std::swap(x, y);
+        return *this;
     }
 
     /// @brief Returns a copy of the vector with x and y value swapped
-    [[nodiscard]] inline Vector2<T> yx() const
+    [[nodiscard]] inline Vector2<T> swap() const
     {
         return Vector2<T>(y, x);
     }
 
-    /// @brief Rotates the vector by a specific
-    inline void rotate(double rad)
-    {
-        setAngle(getAngle() + rad);
-    }
-
-    /// @brief Returns the unit vector (Vector with length 1)
+    /// @brief Chainable. Returns the unit vector (Vector with length 1)
     inline Vector2<T> unit() const
     {
-        Vector2<T> ret;
+        Vector2<T> ret(*this);
         ret.setLength(1.f);
         return ret;
     }
 
-    /// @brief Conversion between differend Vector2 types
+    /// @brief Chainable. Returns a by rad radiants rotated copy of the vector
+    inline Vector2<T> rotate(double rad) const
+    {
+        Vector2<T> ret(*this);
+        ret.setAngle(getAngle() + rad);
+        return ret;
+    }
+
+    /// @brief Chainable. Returns an offset copy of the vector by a translation vector
+    inline Vector2<T> translate(Vector2<T> offset) const
+    {
+        return *this + offset;
+    }
+
+    /// @brief Chainable. Returns a copy of the vector multiplied by a factor
+    inline Vector2<T> scale(double factor) const
+    {
+        return *this * Vector2(factor);
+    }
+
+    /// @brief Chainable. Returns a copy of the vector mirrored at an axis
+    template <typename Ta>
+    inline Vector2<T> mirror(Vector2<Ta> axis) const
+    {
+        if (axis.getLength() == 0)
+            return *this;
+
+        axis = axis.rotate(RAD(-90)).unit();
+        return *this - Vector2(2) * Vector2(dotProduct(*this, axis)) * axis;
+    }
+
+    /// @brief Conversion between different Vector2 types
     template <typename To>
     operator Vector2<To>() const
     {
         return Vector2<To>(static_cast<To>(x), static_cast<To>(y));
     }
 
+    /// @brief Conversion to std::pair
     operator std::pair<T, T>()
     {
         return std::pair<T, T>(x, y);
+    }
+
+    /// @brief Copy assignment operator
+    template <typename To>
+    Vector2<T> &operator=(const Vector2<To> &other)
+    {
+        x = other.x;
+        y = other.y;
+    }
+
+    /// @brief Move assignment operator
+    template <typename To>
+    Vector2<T> &operator=(Vector2<To> &&other)
+    {
+        x = std::move(other.x);
+        y = std::move(other.y);
+        return *this;
     }
 };
 
@@ -154,12 +199,54 @@ template <typename Ta, typename Tb>
     return Vector2(a.x / b.x, a.y / b.y);
 }
 
-/// @brief Stream operator
+/// @brief Outstream operator
 template <typename T>
 inline std::ostream &operator<<(std::ostream &os, const Vector2<T> &v)
 {
     os << v.x << ',' << v.y;
     return os;
+}
+
+/// @brief Less operator
+template <typename Ta, typename Tb>
+inline std::ostream &operator<(const Vector2<Ta> &a, const Vector2<Tb> &b)
+{
+    return a.getLength() < b.getLength();
+}
+
+/// @brief Greater operator
+template <typename Ta, typename Tb>
+inline std::ostream &operator>(const Vector2<Ta> &a, const Vector2<Tb> &b)
+{
+    return a.getLength() > b.getLength();
+}
+
+/// @brief Less-or-equal operator
+template <typename Ta, typename Tb>
+inline std::ostream &operator<=(const Vector2<Ta> &a, const Vector2<Tb> &b)
+{
+    return a.getLength() <= b.getLength();
+}
+
+/// @brief Greater-or-equal operator
+template <typename Ta, typename Tb>
+inline std::ostream &operator>=(const Vector2<Ta> &a, const Vector2<Tb> &b)
+{
+    return a.getLength() >= b.getLength();
+}
+
+/// @brief Equality operator
+template <typename Ta, typename Tb>
+inline std::ostream &operator==(const Vector2<Ta> &a, const Vector2<Tb> &b)
+{
+    return (a.x == b.x) && (a.y == b.y);
+}
+
+/// @brief Inequality operator
+template <typename Ta, typename Tb>
+inline std::ostream &operator!=(const Vector2<Ta> &a, const Vector2<Tb> &b)
+{
+    return (a.x != b.x) || (a.y != b.y);
 }
 
 /// @brief Dot product of two vectors
@@ -174,6 +261,42 @@ template <typename Ta, typename Tb>
 [[nodiscard]] inline double crossProduct(const Vector2<Ta> &a, const Vector2<Tb> &b)
 {
     return a.x * b.y - a.y * b.x;
+}
+
+/// @brief Projects one vector onto another
+template <typename Ta, typename Tb>
+inline Vector2<Tb> project(const Vector2<Ta> &v, const Vector2<Tb> &onto)
+{
+    return Vector2(dotProduct(v, onto) / (onto.getLength() * onto.getLength())) * onto;
+}
+
+// Ostiiiii
+/// @brief Rejects one vector from another
+template <typename Ta, typename Tb>
+[[deprecated("This does not work yet!")]] inline Vector2<Tb> reject(const Vector2<Ta> &v, const Vector2<Tb> &from)
+{
+    return project(v, from.rotate(90));
+}
+
+/// @brief Commonly used interpolations
+namespace Interpolation
+{
+    /// @brief Linear Interpolation between two vectors
+    template <typename Ta, typename Tb>
+    inline Vector2<typename std::common_type<Ta, Tb>::type> linear(Vector2<Ta> a, Vector2<Tb> b, double t)
+    {
+        return a + Vector2(t) * (b - a);
+    }
+
+    /// @brief Smoothstep Interpolation between two vectors
+    template <typename Ta, typename Tb>
+    inline Vector2<typename std::common_type<Ta, Tb>::type> smoothstep(Vector2<Ta> a, Vector2<Tb> b, double t)
+    {
+        t = std::clamp(t, 0.0, 1.0);
+
+        float smoothT = t * t * (3 - 2 * t);
+        return a + Vector2(smoothT) * (b - a);
+    }
 }
 
 // Common Typedefs
