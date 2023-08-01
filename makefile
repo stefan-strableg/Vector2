@@ -23,6 +23,7 @@ main: $(OBJ_PATH) $(INC_PATH)
 $(ODIR)/%.o: $(SDIR)/%.cpp
 	$(CC) $(CFLAGS) -c -o $@ $<
 
+
 .PHONY: clean
 
 clean:

@@ -6,8 +6,7 @@
 #include <type_traits>
 #include <algorithm>
 
-#define DEG(r) (r * 180.f / std::numbers::pi)
-#define RAD(d) (d / 180.f * std::numbers::pi)
+#include "Angle.hpp"
 
 template <typename T>
 struct Vector2
@@ -55,24 +54,24 @@ struct Vector2
     inline Vector2(Vector2 &&v) = default;
 
     /// @brief Returns the angle of the Vector2
-    [[nodiscard]] inline double getAngle() const
+    [[nodiscard]] inline Angle getAngle() const
     {
         return std::atan2(y, x);
     }
 
     /// @brief Returns the length of the Vector2
-    [[nodiscard]] inline double getLength() const
+    [[nodiscard]] inline T getLength() const
     {
         return std::sqrt(x * x + y * y);
     }
 
     /// @brief Chainable. Sets the angle of the Vector2 while leaving the length unchanged
-    inline Vector2<T> setAngle(double ang)
+    inline Vector2<T> setAngle(Angle ang)
     {
         double len = getLength();
 
-        x = len * cos(ang);
-        y = len * sin(ang);
+        x = len * cos(ang.getRadians());
+        y = len * sin(ang.getRadians());
 
         return *this;
     }
@@ -80,10 +79,10 @@ struct Vector2
     /// @brief Chainable. Sets the length of the Vector2 while leaving the angle unchanged
     inline Vector2<T> setLength(double len)
     {
-        double ang = getAngle();
+        Angle ang = getAngle();
 
-        x = len * cos(ang);
-        y = len * sin(ang);
+        x = len * cos(ang.getRadians());
+        y = len * sin(ang.getRadians());
 
         return *this;
     }
@@ -103,10 +102,10 @@ struct Vector2
     }
 
     /// @brief Chainable. Returns a by rad radiants rotated copy of the vector
-    inline Vector2<T> rotate(double rad) const
+    inline Vector2<T> rotate(Angle ang) const
     {
         Vector2<T> ret(*this);
-        ret.setAngle(getAngle() + rad);
+        ret.setAngle(getAngle() + ang.getRadians());
         return ret;
     }
 
@@ -129,7 +128,7 @@ struct Vector2
         if (axis.getLength() == 0)
             return *this;
 
-        axis = axis.rotate(RAD(-90)).unit();
+        axis = axis.rotate(-90).unit();
         return *this - Vector2(2) * Vector2(dotProduct(*this, axis)) * axis;
     }
 

@@ -2,14 +2,17 @@
 #include <iostream>
 #include <chrono>
 #include <thread>
-#include "../inc/Angle.hpp"
 
 int main(void)
 {
-    Angle a(355 + 360);
+    Vector2f v1(2, 4);
+    Vector2f v2(10, 10);
 
-    std::cout << a.wrapUnsigned().getDegrees() << "\n";
-    std::cout << a.wrapSigned().getDegrees() << "\n";
+    std::cout << v1 << "\n";
+    std::cout << v1.swap() << "\n";
+    std::cout << v1.swap().scale(2) << "\n";
+    std::cout << v1.swap().scale(2).rotate(90) << "\n";
+    std::cout << v1.swap().scale(2).rotate(90).setAngle(0) << "\n";
 
     return EXIT_SUCCESS;
 }
