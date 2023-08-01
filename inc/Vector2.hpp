@@ -44,7 +44,7 @@ struct Vector2
 
     /// @brief Move constructor from pair
     inline Vector2(std::pair<T, T> &&p)
-        : x(p.first), y(p.second)
+        : x(std::move(p.first)), y(std::move(p.second))
     {
     }
 

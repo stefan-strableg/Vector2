@@ -24,5 +24,10 @@ $(ODIR)/%.o: $(SDIR)/%.cpp
 	$(CC) $(CFLAGS) -c -o $@ $<
 
 .PHONY: clean
+
 clean:
-	del /f /q bin\* obj\*
+	rm -f $(BIN_PATH)
+	rm -f $(OBJ_PATH)
+
+run: main
+	cmd /c .\bin\main
