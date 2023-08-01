@@ -4,7 +4,7 @@ CFLAGS  = -Wall -g -std=c++20
 LDFLAGS = 
 
 IDIR = inc
-INC = Vector2.hpp
+INC = Vector2.hpp Angle.hpp
 INC_PATH = $(addprefix $(IDIR)/, $(INC))
 
 ODIR = obj

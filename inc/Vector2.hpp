@@ -6,8 +6,8 @@
 #include <type_traits>
 #include <algorithm>
 
-#define DEG(rad) (rad * 180.f / std::numbers::pi)
-#define RAD(deg) (deg / 180.f * std::numbers::pi)
+#define DEG(r) (r * 180.f / std::numbers::pi)
+#define RAD(d) (d / 180.f * std::numbers::pi)
 
 template <typename T>
 struct Vector2
