@@ -5,6 +5,7 @@
 #include <numbers>
 #include <type_traits>
 #include <algorithm>
+#include <iostream>
 
 #include "Angle.hpp"
 
@@ -105,9 +106,12 @@ struct Vector2
     /// @brief Chainable. Returns a by ang rotated copy of the vector
     inline Vector2<T> rotate(Angle ang) const
     {
-        Vector2<T> ret(*this);
-        ret.setAngle(getAngle() + ang.getRadians());
-        return ret;
+        const float cosine = cos(ang.getRadians());
+        const float sine = sin(ang.getRadians());
+
+        return Vector2<T>(
+            cosine * x - sine * y,
+            sine * x + cosine * y);
     }
 
     /// @brief Chainable. Returns an offset copy of the vector by a translation vector

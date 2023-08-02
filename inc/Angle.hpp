@@ -26,7 +26,7 @@ public:
     /// @brief Returns the Angle in radians
     [[nodiscard]] constexpr float getRadians() const
     {
-        return _degrees * 180 / std::numbers::pi;
+        return _degrees * std::numbers::pi / 180.f;
     }
 
     /// @brief Wraps the angle to the range of [-180, 180)

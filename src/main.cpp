@@ -5,15 +5,9 @@
 
 int main(void)
 {
-    Angle a(360);
-    Angle b(0);
-    Angle c(180);
-    Angle d(-180);
+    Vector2 v(9.f, 9.f);
 
-    std::cout << a.wrapUnsigned().getDegrees() << "\n";
-    std::cout << b.wrapUnsigned().getDegrees() << "\n";
-    std::cout << c.wrapSigned().getDegrees() << "\n";
-    std::cout << d.wrapSigned().getDegrees() << "\n";
+    std::cout << v.rotate(degrees(-90)) << '\n';
 
     return EXIT_SUCCESS;
 }
