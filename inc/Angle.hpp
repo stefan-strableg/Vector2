@@ -10,11 +10,14 @@ private:
 
 public:
     /// @brief Default Constructor
-    constexpr Angle() = default;
+    constexpr Angle()
+        : _degrees(0)
+    {
+    };
     /// @brief Parameterized Constructor
     constexpr Angle(float degrees)
+        : _degrees(degrees)
     {
-        _degrees = degrees;
     }
 
     /// @brief Returns the Angle in degrees
@@ -107,6 +110,11 @@ Angle operator+(Angle a, Angle b)
 Angle operator-(Angle a, Angle b)
 {
     return Angle(a.getDegrees() - b.getDegrees());
+}
+/// @brief Subtraction Operator
+Angle operator-(Angle a)
+{
+    return Angle(-a.getDegrees());
 }
 /// @brief Addition assignment Operator
 Angle &operator+=(Angle &a, Angle b)

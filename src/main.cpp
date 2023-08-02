@@ -89,18 +89,45 @@ int main(void)
     std::cout << "b / a = " << b << " / " << a << " = " << (b / a) << " (b/a because no division by zero)\n";
 
     std::cout << "\n ASSIGNMENT OPERATORS:\n\n";
+    std::cout << "c += b; " << c << " += " << b << " = ";
     c += b;
-    std::cout << "c += b; " << c << " += " << b << " = " << c << "\n";
+    std::cout << c << "\n";
+    std::cout << "c -= b; " << c << " -= " << b << " = ";
     c -= b;
-    std::cout << "c -= b; " << c << " -= " << b << " = " << c << "\n";
+    std::cout << c << "\n";
+    std::cout << "c *= b; " << c << " *= " << b << " = ";
     c *= b;
-    std::cout << "c *= b; " << c << " *= " << b << " = " << c << "\n";
+    std::cout << c << "\n";
+    std::cout << "c /= a; " << c << " /= " << a << " = ";
     c /= a;
-    std::cout << "c /= a; " << c << " /= " << a << " = " << c << "\n";
+    std::cout << c << "\n";
 
     b = a;
 
     std::cout << "\n LOGIC OPERATORS:\n\n";
+    std::cout << "a == b: " << (a == b) << "\n";
+    std::cout << "a == c: " << (a == c) << "\n";
+    std::cout << "a == b: " << (a != b) << "\n";
+    std::cout << "a == c: " << (a != c) << "\n";
+    
+    std::cout << "\n CHAINING OPERATORS:\n\n";
+
+    a = Vector2(5, 5);
+    a.rotate(90_deg).rotate(-3.1415_rad).scale(2).swap().translate(Vector2(-2, 2)).unify();
+
+    std::cout << "chained: a: (" << a << ") or len "
+              << a.getLength() << " ang " << a.getAngle().getDegrees() << "\n";
+
+    a = Vector2(5, 5);
+    a.rotate(90_deg);
+    a.rotate(-3.1415_rad);
+    a.scale(2);
+    a.swap();
+    a.translate(Vector2(-2, 2));
+    a.unify();
+
+    std::cout << "No chaining: a: (" << a << ") or len "
+              << a.getLength() << " ang " << a.getAngle().getDegrees() << "\n";
 
     return EXIT_SUCCESS;
 }

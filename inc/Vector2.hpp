@@ -4,9 +4,7 @@
 #include <cmath>
 #include <numbers>
 #include <type_traits>
-#include <algorithm>
 #include <iostream>
-#include <stdexcept>
 
 #include "Angle.hpp"
 
@@ -250,14 +248,14 @@ constexpr std::ostream &operator<<(std::ostream &os, const Vector2<T> &v)
 
 /// @brief Equality operator
 template <typename Ta, typename Tb>
-constexpr std::ostream &operator==(const Vector2<Ta> &a, const Vector2<Tb> &b)
+constexpr bool operator==(const Vector2<Ta> &a, const Vector2<Tb> &b)
 {
     return (a.x == b.x) && (a.y == b.y);
 }
 
 /// @brief Inequality operator
 template <typename Ta, typename Tb>
-constexpr std::ostream &operator!=(const Vector2<Ta> &a, const Vector2<Tb> &b)
+constexpr bool operator!=(const Vector2<Ta> &a, const Vector2<Tb> &b)
 {
     return (a.x != b.x) || (a.y != b.y);
 }
@@ -288,27 +286,6 @@ template <typename Ta, typename Tb>
 [[nodiscard]] constexpr Vector2<Tb> reject(const Vector2<Ta> &v, const Vector2<Tb> &from)
 {
     return v - project(v, from);
-}
-
-/// @brief Commonly used interpolations
-namespace Interpolation
-{
-    /// @brief Linear Interpolation between two vectors
-    template <typename Ta, typename Tb>
-    [[nodiscard]] constexpr Vector2<typename std::common_type<Ta, Tb>::type> linear(Vector2<Ta> a, Vector2<Tb> b, double t)
-    {
-        return a + Vector2(t) * (b - a);
-    }
-
-    /// @brief Smoothstep Interpolation between two vectors
-    template <typename Ta, typename Tb>
-    [[nodiscard]] constexpr Vector2<typename std::common_type<Ta, Tb>::type> smoothstep(Vector2<Ta> a, Vector2<Tb> b, double t)
-    {
-        t = std::clamp(t, 0.0, 1.0);
-
-        float smoothT = t * t * (3 - 2 * t);
-        return a + Vector2(smoothT) * (b - a);
-    }
 }
 
 // Common Typedefs
