@@ -3,8 +3,19 @@
 #include <chrono>
 #include <thread>
 
+void testVector2();
+void testAngle();
+
 int main(void)
 {
+    testAngle();
+    return EXIT_SUCCESS;
+}
+
+
+void testVector2()
+{
+    
     Vector2 a(2.f, 4.f);
     Vector2f b;
     Vector2 c(a);
@@ -128,6 +139,81 @@ int main(void)
 
     std::cout << "No chaining: a: (" << a << ") or len "
               << a.getLength() << " ang " << a.getAngle().getDegrees() << "\n";
+}
 
-    return EXIT_SUCCESS;
+void testAngle()
+{
+    Angle a(degrees(90));
+    Angle b;
+    Angle c(a);
+
+    std::cout << " CONSTRUCTION:\n\n";
+    std::cout << "a: " << a.getDegrees() << "deg, " << a.getRadians() << "rad\n";
+    std::cout << "b: " << b.getDegrees() << "deg, " << b.getRadians() << "rad\n";
+    std::cout << "c: " << c.getDegrees() << "deg, " << c.getRadians() << "rad\n";
+
+    
+    std::cout << "\n WRAPPING:\n\n";
+    std::cout << "Wrapping 90 deg to signed: " << degrees(90).wrapSigned().getDegrees() << "\n";
+    std::cout << "Wrapping 280 deg to signed: " << degrees(280).wrapSigned().getDegrees() << "\n";
+    std::cout << "Wrapping 560 deg to signed: " << degrees(560).wrapSigned().getDegrees() << "\n";
+    std::cout << "Wrapping 3600 deg to signed: " << degrees(3600).wrapSigned().getDegrees() << "\n\n";
+    std::cout << "Wrapping 90 deg to unsigned: " << degrees(90).wrapUnsigned().getDegrees() << "\n";
+    std::cout << "Wrapping 280 deg to unsigned: " << degrees(280).wrapUnsigned().getDegrees() << "\n";
+    std::cout << "Wrapping 560 deg to unsigned: " << degrees(560).wrapUnsigned().getDegrees() << "\n";
+    std::cout << "Wrapping 3600 deg to unsigned: " << degrees(3600).wrapUnsigned().getDegrees() << "\n";
+    
+
+    std::cout << "\n CONVERSION TO FLOATING POINT TYPES:\n\n";
+    std::cout << "2.f * (float)a = " << (2.f * (float)a) << "\n";
+    std::cout << "2.f * (double)a = " << (2.f * (double)a) << "\n";
+
+
+    std::cout << "\n DEGREES AND RADIANS:\n\n";
+    std::cout << "degrees(90): " << degrees(90).getDegrees() << " deg\n";
+    std::cout << "degrees(90): " << degrees(90).getRadians() << " rad\n";
+    std::cout << "radians(std::numbers::pi): " << radians(std::numbers::pi).getDegrees() << " deg\n";
+    std::cout << "radians(std::numbers::pi): " << radians(std::numbers::pi).getRadians() << " rad\n";
+
+
+    std::cout << "\n LOGICAL OPERATORS\n\n";
+    a = 90_deg;
+    b = 45_deg;
+    std::cout << "a = " << a.getDegrees() << ", b = " << b.getDegrees() << "\n";
+    std::cout << "a < b: " << (a < b) << "\n";
+    std::cout << "a > b: " << (a > b) << "\n";
+    std::cout << "a <= b: " << (a <= b) << "\n";
+    std::cout << "a >= b: " << (a >= b) << "\n";
+    std::cout << "a == b: " << (a == b) << "\n";
+    std::cout << "a != b: " << (a != b) << "\n\n";
+    
+    a = 45_deg;
+    b = 90_deg;
+    std::cout << "a = " << a.getDegrees() << ", b = " << b.getDegrees() << "\n";
+    std::cout << "a < b: " << (a < b) << "\n";
+    std::cout << "a > b: " << (a > b) << "\n";
+    std::cout << "a <= b: " << (a <= b) << "\n";
+    std::cout << "a >= b: " << (a >= b) << "\n";
+    std::cout << "a == b: " << (a == b) << "\n";
+    std::cout << "a != b: " << (a != b) << "\n\n";
+    
+    a = 90_deg;
+    b = 90_deg;
+    std::cout << "a = " << a.getDegrees() << ", b = " << b.getDegrees() << "\n";
+    std::cout << "a < b: " << (a < b) << "\n";
+    std::cout << "a > b: " << (a > b) << "\n";
+    std::cout << "a <= b: " << (a <= b) << "\n";
+    std::cout << "a >= b: " << (a >= b) << "\n";
+    std::cout << "a == b: " << (a == b) << "\n";
+    std::cout << "a != b: " << (a != b) << "\n";
+
+    std::cout << "\n LOGICAL OPERATORS\n\n";
+    a = 180_deg;
+    b = 90_deg;
+    std::cout << "a = " << a.getDegrees() << ", b = " << b.getDegrees() << "\n";
+    std::cout << "a + b: " << (a + b).getDegrees() << "\n";
+    std::cout << "a - b: " << (a - b).getDegrees() << "\n";
+    std::cout << "a * b: " << (a * b).getDegrees() << "\n";
+    std::cout << "a / b: " << (a / b).getDegrees() << "\n";
+    std::cout << "a % b: " << (a % b).getDegrees() << "\n";
 }

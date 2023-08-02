@@ -8,7 +8,7 @@ class Angle
 private:
     float _radians;
     
-    /// @brief Parameterized Constructor from degrees. This is private as it is not naturally clear that the constructor takes degrees.
+    /// @brief Parameterized Constructor from degrees. This is private as it is not naturally clear that the constructor takes radians.
     constexpr Angle(float radians)
         : _radians(radians)
     {
@@ -42,7 +42,7 @@ public:
     [[nodiscard]] constexpr Angle wrapSigned() const
     {
         const float rad = _radians - std::numbers::pi;
-        const float ret = rad - std::ceil(rad / 2.f / std::numbers::pi) * 2.f * std::numbers::pi;
+        const float ret = rad - std::ceil(rad / (2.f * std::numbers::pi)) * (2.f * std::numbers::pi);
         if (ret >= 0.f)
             return Angle(ret - std::numbers::pi);
         else
@@ -52,7 +52,7 @@ public:
     /// @brief Wraps the angle to the range of [0, 360)
     [[nodiscard]] constexpr Angle wrapUnsigned() const
     {
-        const float ret = _radians - std::ceil(_radians / 2.f / std::numbers::pi) * 2.f *std::numbers::pi;
+        const float ret = _radians - std::ceil(_radians / (2.f * std::numbers::pi)) * (2.f * std::numbers::pi);
         if (ret >= 0.f)
             return Angle(ret);
         else
