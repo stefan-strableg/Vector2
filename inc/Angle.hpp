@@ -6,180 +6,198 @@
 class Angle
 {
 private:
-    float _degrees;
+    float _radians;
+    
+    /// @brief Parameterized Constructor from degrees. This is private as it is not naturally clear that the constructor takes degrees.
+    constexpr Angle(float radians)
+        : _radians(radians)
+    {
+    }
+
+    /// @brief This function along with radians() should be used instead of the parameterized constructor
+    friend constexpr Angle degrees(float d);
+    /// @brief This function along with degrees() should be used instead of the parameterized constructor
+    friend constexpr Angle radians(float r);
 
 public:
     /// @brief Default Constructor
     constexpr Angle()
-        : _degrees(0)
+        : _radians(0)
     {
     };
-    /// @brief Parameterized Constructor
-    constexpr Angle(float degrees)
-        : _degrees(degrees)
-    {
-    }
 
     /// @brief Returns the Angle in degrees
     [[nodiscard]] constexpr float getDegrees() const
     {
-        return _degrees;
+        return _radians / std::numbers::pi * 180.f;
     }
 
     /// @brief Returns the Angle in radians
     [[nodiscard]] constexpr float getRadians() const
     {
-        return _degrees * std::numbers::pi / 180.f;
+        return _radians;
     }
 
     /// @brief Wraps the angle to the range of [-180, 180)
     [[nodiscard]] constexpr Angle wrapSigned() const
     {
-        const float deg = _degrees - 180;
-        const float ret = deg - std::ceil(deg / 360.f) * 360.f;
+        const float rad = _radians - std::numbers::pi;
+        const float ret = rad - std::ceil(rad / 2.f / std::numbers::pi) * 2.f * std::numbers::pi;
         if (ret >= 0.f)
-            return Angle(ret - 180);
+            return Angle(ret - std::numbers::pi);
         else
-            return Angle(ret + 180);
+            return Angle(ret + std::numbers::pi);
     }
 
     /// @brief Wraps the angle to the range of [0, 360)
     [[nodiscard]] constexpr Angle wrapUnsigned() const
     {
-        const float ret = _degrees - std::ceil(_degrees / 360.f) * 360.f;
+        const float ret = _radians - std::ceil(_radians / 2.f / std::numbers::pi) * 2.f *std::numbers::pi;
         if (ret >= 0.f)
             return Angle(ret);
         else
-            return Angle(ret + 360.f);
+            return Angle(ret + 2.f * std::numbers::pi);
+    }
+
+    /// @brief Conversion to float in radians, for easier use in calculations
+    operator float()
+    {
+        return _radians;
+    }
+
+    /// @brief Conversion to double in radians, for easier use in calculations
+    operator double()
+    {
+        return _radians;
     }
 };
 
-/// @brief Makes a Angle object from an angle in degrees
-constexpr Angle degrees(float d)
+/// @brief Makes an Angle object from an angle in degrees
+[[nodiscard]] constexpr Angle degrees(float d)
 {
-    return Angle(d);
+    return Angle(d / 180.f * std::numbers::pi);
 }
-/// @brief Makes a Angle object from an angle in radians
-constexpr Angle radians(float r)
+/// @brief Makes an Angle object from an angle in radians
+[[nodiscard]] constexpr Angle radians(float r)
 {
-    return Angle(r * 180 / std::numbers::pi);
+    return Angle(r);
 }
 
 /// @brief Equality Operator
-bool operator==(Angle a, Angle b)
+[[nodiscard]] bool operator==(const Angle &a, const Angle &b)
 {
-    return a.getDegrees() == b.getDegrees();
+    return a.getRadians() == b.getRadians();
 }
 
 /// @brief Inequality Operator
-bool operator!=(Angle a, Angle b)
+[[nodiscard]] bool operator!=(const Angle &a, const Angle &b)
 {
-    return a.getDegrees() != b.getDegrees();
+    return a.getRadians() != b.getRadians();
 }
 
 /// @brief Less Operator
-bool operator<(Angle a, Angle b)
+[[nodiscard]] bool operator<(const Angle &a, const Angle &b)
 {
-    return a.getDegrees() < b.getDegrees();
+    return a.getRadians() < b.getRadians();
 }
 
 /// @brief Greater Operator
-bool operator>(Angle a, Angle b)
+[[nodiscard]] bool operator>(const Angle &a, const Angle &b)
 {
-    return a.getDegrees() > b.getDegrees();
+    return a.getRadians() > b.getRadians();
 }
 
 /// @brief Less-or-equal Operator
-bool operator<=(Angle a, Angle b)
+[[nodiscard]] bool operator<=(const Angle &a, const Angle &b)
 {
-    return a.getDegrees() <= b.getDegrees();
+    return a.getRadians() <= b.getRadians();
 }
 
 /// @brief Greater-or-equal Operator
-bool operator>=(Angle a, Angle b)
+[[nodiscard]] bool operator>=(const Angle &a, const Angle &b)
 {
-    return a.getDegrees() >= b.getDegrees();
+    return a.getRadians() >= b.getRadians();
 }
 
 /// @brief Addition Operator
-Angle operator+(Angle a, Angle b)
+[[nodiscard]] Angle operator+(const Angle &a, const Angle &b)
 {
-    return Angle(a.getDegrees() + b.getDegrees());
+    return radians(a.getRadians() + b.getRadians());
 }
 /// @brief Subtraction Operator
-Angle operator-(Angle a, Angle b)
+[[nodiscard]] Angle operator-(const Angle &a, const Angle &b)
 {
-    return Angle(a.getDegrees() - b.getDegrees());
+    return radians(a.getRadians() - b.getRadians());
 }
 /// @brief Subtraction Operator
-Angle operator-(Angle a)
+[[nodiscard]] Angle operator-(const Angle &a)
 {
-    return Angle(-a.getDegrees());
+    return radians(-a.getRadians());
 }
 /// @brief Addition assignment Operator
-Angle &operator+=(Angle &a, Angle b)
+Angle &operator+=(Angle &a, const Angle &b)
 {
     return a = a + b;
 }
 /// @brief Subtraction assignment Operator
-Angle &operator-=(Angle &a, Angle b)
+Angle &operator-=(Angle &a, const Angle &b)
 {
     return a = a - b;
 }
 
 /// @brief Multiplication Operator (Element-wise)
-Angle operator*(Angle a, Angle b)
+[[nodiscard]] Angle operator*(const Angle &a, const Angle &b)
 {
-    return Angle(a.getDegrees() * b.getDegrees());
+    return radians(a.getRadians() * b.getRadians());
 }
 /// @brief Division Operator
-Angle operator/(Angle a, Angle b)
+[[nodiscard]] Angle operator/(const Angle &a, const Angle &b)
 {
-    return Angle(a.getDegrees() / b.getDegrees());
+    return radians(a.getRadians() / b.getRadians());
 }
 /// @brief Multiplication Assignment Operator
-Angle &operator*=(Angle &a, Angle b)
+Angle &operator*=(Angle &a, const Angle &b)
 {
     return a = a * b;
 }
 /// @brief Division Assignment Operator
-Angle &operator/=(Angle &a, Angle b)
+Angle &operator/=(Angle &a, const Angle &b)
 {
     return a = a / b;
 }
 
 /// @brief Modulo Operator
-Angle operator%(Angle a, Angle b)
+[[nodiscard]] Angle operator%(const Angle &a, const Angle &b)
 {
-    const float ret = a.getDegrees() - std::ceil(a.getDegrees() / 360.f) * 360.f;
+    const float ret = a.getRadians() - std::ceil(a.getRadians() / 2.f / std::numbers::pi) * 2.f * std::numbers::pi;
     if (ret >= 0.f)
-        return Angle(ret);
+        return radians(ret);
     else
-        return Angle(ret + 360.f);
+        return radians(ret + 2.f * std::numbers::pi);
 }
 /// @brief Modulo Assignment Operator
-Angle &operator%=(Angle &a, Angle b)
+Angle &operator%=(Angle &a, const Angle &b)
 {
     return a = a % b;
 }
 
 /// @brief Literal Operator for degrees
-Angle operator""_deg(long double angle)
+[[nodiscard]] Angle operator""_deg(long double angle)
 {
     return degrees(angle);
 }
 /// @brief Literal Operator for degrees
-Angle operator""_deg(unsigned long long angle)
+[[nodiscard]] Angle operator""_deg(unsigned long long angle)
 {
     return degrees(angle);
 }
 /// @brief Literal Operator for radians
-Angle operator""_rad(long double angle)
+[[nodiscard]] Angle operator""_rad(long double angle)
 {
     return radians(angle);
 }
 /// @brief Literal Operator for radians
-Angle operator""_rad(unsigned long long angle)
+[[nodiscard]] Angle operator""_rad(unsigned long long angle)
 {
     return radians(angle);
 }
