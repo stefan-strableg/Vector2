@@ -74,7 +74,9 @@
         "numeric": "cpp",
         "random": "cpp",
         "string_view": "cpp",
-        "semaphore": "cpp"
+        "semaphore": "cpp",
+        "span": "cpp",
+        "variant": "cpp"
     },
     "C_Cpp.default.configurationProvider": "ms-vscode.makefile-tools",
     "C_Cpp.default.cppStandard": "gnu++20"

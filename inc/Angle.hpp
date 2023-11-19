@@ -167,7 +167,7 @@ Angle &operator/=(Angle &a, const Angle &b)
 }
 
 /// @brief Modulo Operator
-[[nodiscard]] Angle operator%(const Angle &a, const Angle &b)
+[[deprecated("NYI")]] [[nodiscard]] Angle operator%(const Angle &a, const Angle &b)
 {
     const float ret = a.getRadians() - std::ceil(a.getRadians() / 2.f / std::numbers::pi) * 2.f * std::numbers::pi;
     if (ret >= 0.f)

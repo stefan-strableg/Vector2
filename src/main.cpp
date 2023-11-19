@@ -1,17 +1,38 @@
 #include "..\inc\Vector2.hpp"
+#include "..\inc\Interpolation.hpp"
 #include <iostream>
 #include <chrono>
 #include <thread>
 
 void testVector2();
 void testAngle();
+void testInterpolation();
 
 int main(void)
 {
-    testAngle();
+    testInterpolation();
     return EXIT_SUCCESS;
 }
 
+void testInterpolation()
+{
+    Vector2<float> a(0,0);
+    Vector2<float> b(1,10);
+
+    std::cout << "Interp::linear between " << a << " and " << b << ":\n";
+    for (float f = 0; f < 1.01; f+=0.1)
+    {
+        std::cout << Interp::linear(a,b,f) << "\n";
+    }
+    std::cout << "\n";
+    
+    std::cout << "Interp::smoothstep between " << a << " and " << b << ":\n";
+    for (float f = 0; f < 1.01; f+=0.1)
+    {
+        std::cout << Interp::smoothstep(a,b,f) << "\n";
+    }
+    std::cout << "\n";
+}
 
 void testVector2()
 {
