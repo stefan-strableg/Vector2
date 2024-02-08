@@ -7,7 +7,7 @@ class Angle
 {
 private:
     float _radians;
-    
+
     /// @brief Parameterized Constructor from degrees. This is private as it is not naturally clear that the constructor takes radians.
     constexpr Angle(float radians)
         : _radians(radians)
@@ -22,9 +22,7 @@ private:
 public:
     /// @brief Default Constructor
     constexpr Angle()
-        : _radians(0)
-    {
-    };
+        : _radians(0){};
 
     /// @brief Returns the Angle in degrees
     [[nodiscard]] constexpr float getDegrees() const
@@ -175,6 +173,7 @@ Angle &operator/=(Angle &a, const Angle &b)
     else
         return radians(ret + 2.f * std::numbers::pi);
 }
+
 /// @brief Modulo Assignment Operator
 Angle &operator%=(Angle &a, const Angle &b)
 {

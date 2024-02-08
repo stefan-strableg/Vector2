@@ -7,7 +7,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 add_compile_options(-Wall -Wextra -Wpedantic)
 add_link_options(-static-libgcc -static-libstdc++)
 
-if(IS_DIRECTORY submodules/googletest)
+if(IS_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/submodules/googletest)
     message("googletest directory found, unit testing ENABLED")
     enable_testing()
     add_subdirectory(submodules/googletest)

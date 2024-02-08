@@ -16,27 +16,27 @@ int main(void)
 
 void testInterpolation()
 {
-    Vector2<float> a(0,0);
-    Vector2<float> b(1,10);
+    Vector2<float> a(0, 0);
+    Vector2<float> b(1, 10);
 
     std::cout << "Interp::linear between " << a << " and " << b << ":\n";
-    for (float f = 0; f < 1.01; f+=0.1)
+    for (float f = 0; f < 1.01; f += 0.1)
     {
-        std::cout << Interp::linear(a,b,f) << "\n";
+        std::cout << Interp::linear(a, b, f) << "\n";
     }
     std::cout << "\n";
-    
+
     std::cout << "Interp::smoothstep between " << a << " and " << b << ":\n";
-    for (float f = 0; f < 1.01; f+=0.1)
+    for (float f = 0; f < 1.01; f += 0.1)
     {
-        std::cout << Interp::smoothstep(a,b,f) << "\n";
+        std::cout << Interp::smoothstep(a, b, f) << "\n";
     }
     std::cout << "\n";
 }
 
 void testVector2()
 {
-    
+
     Vector2 a(2.f, 4.f);
     Vector2f b;
     Vector2 c(a);
@@ -70,7 +70,7 @@ void testVector2()
               << b.getLength() << " ang " << b.getAngle().getDegrees()
               << '\n';
 
-    a.rotate(degrees(90));
+    a.getRotated(degrees(90));
     b.rotate(degrees(-45));
 
     std::cout << "\n ROTATE:\n\n";
@@ -141,18 +141,18 @@ void testVector2()
     std::cout << "a == c: " << (a == c) << "\n";
     std::cout << "a == b: " << (a != b) << "\n";
     std::cout << "a == c: " << (a != c) << "\n";
-    
+
     std::cout << "\n CHAINING OPERATORS:\n\n";
 
     a = Vector2(5, 5);
-    a.rotate(90_deg).rotate(-3.1415_rad).scale(2).swap().translate(Vector2(-2, 2)).unify();
+    a.getRotated(90_deg).getRotated(-3.1415_rad).scale(2).swap().translate(Vector2(-2, 2)).unify();
 
     std::cout << "chained: a: (" << a << ") or len "
               << a.getLength() << " ang " << a.getAngle().getDegrees() << "\n";
 
     a = Vector2(5, 5);
-    a.rotate(90_deg);
-    a.rotate(-3.1415_rad);
+    a.getRotated(90_deg);
+    a.getRotated(-3.1415_rad);
     a.scale(2);
     a.swap();
     a.translate(Vector2(-2, 2));
@@ -173,7 +173,6 @@ void testAngle()
     std::cout << "b: " << b.getDegrees() << "deg, " << b.getRadians() << "rad\n";
     std::cout << "c: " << c.getDegrees() << "deg, " << c.getRadians() << "rad\n";
 
-    
     std::cout << "\n WRAPPING:\n\n";
     std::cout << "Wrapping 90 deg to signed: " << degrees(90).wrapSigned().getDegrees() << "\n";
     std::cout << "Wrapping 280 deg to signed: " << degrees(280).wrapSigned().getDegrees() << "\n";
@@ -183,19 +182,16 @@ void testAngle()
     std::cout << "Wrapping 280 deg to unsigned: " << degrees(280).wrapUnsigned().getDegrees() << "\n";
     std::cout << "Wrapping 560 deg to unsigned: " << degrees(560).wrapUnsigned().getDegrees() << "\n";
     std::cout << "Wrapping 3600 deg to unsigned: " << degrees(3600).wrapUnsigned().getDegrees() << "\n";
-    
 
     std::cout << "\n CONVERSION TO FLOATING POINT TYPES:\n\n";
     std::cout << "2.f * (float)a = " << (2.f * (float)a) << "\n";
     std::cout << "2.f * (double)a = " << (2.f * (double)a) << "\n";
-
 
     std::cout << "\n DEGREES AND RADIANS:\n\n";
     std::cout << "degrees(90): " << degrees(90).getDegrees() << " deg\n";
     std::cout << "degrees(90): " << degrees(90).getRadians() << " rad\n";
     std::cout << "radians(std::numbers::pi): " << radians(std::numbers::pi).getDegrees() << " deg\n";
     std::cout << "radians(std::numbers::pi): " << radians(std::numbers::pi).getRadians() << " rad\n";
-
 
     std::cout << "\n LOGICAL OPERATORS\n\n";
     a = 90_deg;
@@ -207,7 +203,7 @@ void testAngle()
     std::cout << "a >= b: " << (a >= b) << "\n";
     std::cout << "a == b: " << (a == b) << "\n";
     std::cout << "a != b: " << (a != b) << "\n\n";
-    
+
     a = 45_deg;
     b = 90_deg;
     std::cout << "a = " << a.getDegrees() << ", b = " << b.getDegrees() << "\n";
@@ -217,7 +213,7 @@ void testAngle()
     std::cout << "a >= b: " << (a >= b) << "\n";
     std::cout << "a == b: " << (a == b) << "\n";
     std::cout << "a != b: " << (a != b) << "\n\n";
-    
+
     a = 90_deg;
     b = 90_deg;
     std::cout << "a = " << a.getDegrees() << ", b = " << b.getDegrees() << "\n";

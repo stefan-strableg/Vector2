@@ -87,49 +87,39 @@ struct Vector2
         return *this;
     }
 
-    /// @brief Swaps the x and y components of the vector
-    constexpr Vector2<T> &swap()
+    /// @brief Returns a Copy of the vector with the x and y components of the vector swapped
+    [[nodiscard]] constexpr Vector2<T> getSwapped()
     {
-        std::swap(x, y);
-        return *this;
+        return Vector2<T>(y, x);
     }
 
     /// @brief Returns the unit vector (Vector with length 1)
-    constexpr Vector2<T> &unify()
+    [[nodiscard]] constexpr Vector2<T> getNormalized()
     {
         const T len = getLength();
-        x /= len;
-        y /= len;
-        return *this;
+        return Vector2(x / len, y / len);
     }
 
-    /// @brief rotates the vector by ang
-    constexpr Vector2<T> &rotate(Angle ang)
+    /// @brief Returns a Copy of the vector rotated by ang
+    [[nodiscard]] constexpr Vector2<T> getRotated(Angle ang)
     {
         const float cosine = cos(ang.getRadians());
         const float sine = sin(ang.getRadians());
 
-        const T _x = x;
-
-        x = cosine * x - sine * y;
-        y = sine * _x + cosine * y;
-
-        return *this;
+        return Vector2<T>(cosine * x - sine * y,
+                          sine * x + cosine * y);
     }
 
-    /// @brief Translates the vector by another vector
-    constexpr Vector2<T> &translate(Vector2<T> offset)
+    /// @brief Returns a Copy of the vector translated by offset
+    [[nodiscard]] constexpr Vector2<T> getTranslated(Vector2<T> offset)
     {
-        (*this) += offset;
-        return *this;
+        return Vector2<T>(x + offset.x, y + offset.y);
     }
 
-    /// @brief Scales the vector by a factor
-    constexpr Vector2<T> &scale(double factor)
+    /// @brief Returns a Copy of the vector scaled by factor
+    [[nodiscard]] constexpr Vector2<T> getScaled(double factor)
     {
-        x *= factor;
-        y *= factor;
-        return *this;
+        return Vector2<T>(x * factor, y * factor);
     }
 
     /// @brief Conversion between different Vector2 types
@@ -181,7 +171,8 @@ constexpr Vector2<Ta> operator+=(Vector2<Ta> &a, const Vector2<Tb> &b)
 
 /// @brief Subtraction operator
 template <typename Ta, typename Tb>
-[[nodiscard]] constexpr Vector2<typename std::common_type<Ta, Tb>::type> operator-(const Vector2<Ta> &a, const Vector2<Tb> &b)
+[[nodiscard]] constexpr Vector2<typename std::common_type<Ta, Tb>::type>
+operator-(const Vector2<Ta> &a, const Vector2<Tb> &b)
 {
     return Vector2(a.x - b.x, a.y - b.y);
 }
@@ -204,7 +195,8 @@ template <typename Ta>
 
 /// @brief Multiplication operator
 template <typename Ta, typename Tb>
-[[nodiscard]] constexpr Vector2<typename std::common_type<Ta, Tb>::type> operator*(const Vector2<Ta> &a, const Vector2<Tb> &b)
+[[nodiscard]] constexpr Vector2<typename std::common_type<Ta, Tb>::type>
+operator*(const Vector2<Ta> &a, const Vector2<Tb> &b)
 {
     return Vector2(a.x * b.x, a.y * b.y);
 }
